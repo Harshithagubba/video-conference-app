@@ -1,48 +1,48 @@
+// server.js
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
 
-// Initialize Express app
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-// Serve static files from the 'public' directory
+// Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Handle socket connections
+// Set up WebSocket connection
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  // Handle 'offer' event from clients
-  socket.on('offer', (offer) => {
-    socket.broadcast.emit('offer', offer);
+  socket.on('message', (msg) => {
+    console.log('Message received: ' + msg);
+    io.emit('message', msg);
   });
 
-  // Handle 'answer' event from clients
-  socket.on('answer', (answer) => {
-    socket.broadcast.emit('answer', answer);
-  });
-
-  // Handle 'candidate' event from clients
-  socket.on('candidate', (candidate) => {
-    socket.broadcast.emit('candidate', candidate);
-  });
-
-  // Handle disconnection
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
+    console.log('User disconnected');
   });
 });
 
-// Set the port
-const port = process.env.PORT || 3000;
-
-// Start the server
-server.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+// Serve the main HTML file
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+
+
+
+
+
+
+
 
 
 

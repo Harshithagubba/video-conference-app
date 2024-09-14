@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video Conference</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Conference</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="video-container">
-    <div class="video-wrapper">
-      <video id="localVideo" autoplay muted></video>
-      <div class="chat-icon" onclick="openChat()">💬</div>
+    <div id="videos"></div>
+    <div id="chat-container">
+        <div id="chat"></div>
+        <input id="message" type="text" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
     </div>
-    <div class="video-wrapper">
-      <video id="remoteVideo" autoplay></video>
-      <div class="chat-icon" onclick="openChat()">💬</div>
-    </div>
-  </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
 
   <!-- Chat Modal -->
   <div id="chatModal" class="modal">
