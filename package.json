@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "build":"echo 'No build step is required'"
+    "build": "echo 'No build step is required'"
   },
   "keywords": [
     "video conferencing",
@@ -17,6 +17,7 @@
   "description": "A video conferencing solution with chat support",
   "dependencies": {
     "express": "^4.21.0",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "video-conference-app": "file:"
   }
 }

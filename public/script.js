@@ -1,4 +1,5 @@
-const socket = io();
+const socket = io('https://video-conference-backend-tvzt.onrender.com');
+
 
 // Handle chat messages
 const chatBox = document.getElementById('chat');
