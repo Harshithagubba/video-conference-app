@@ -1,62 +1,49 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const path = require('path');
 
-// Create an Express application
+// Initialize Express app
 const app = express();
-
-// Create an HTTP server
 const server = http.createServer(app);
-
-// Initialize socket.io with the HTTP server
 const io = socketIo(server);
 
 // Serve static files from the 'public' directory
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Handle WebSocket connections
+// Handle socket connections
 io.on('connection', (socket) => {
-  console.log('a user connected');
-  
-  // Notify all clients that a new user has connected
-  io.emit('user connected', socket.id);
+  console.log('A user connected');
 
-  // Handle 'new user' event
-  socket.on('new user', () => {
-    io.emit('user connected', socket.id);
+  // Handle 'offer' event from clients
+  socket.on('offer', (offer) => {
+    socket.broadcast.emit('offer', offer);
   });
 
-  // Handle 'offer' event
-  socket.on('offer', (userId, offer) => {
-    socket.broadcast.emit('offer', userId, offer);
+  // Handle 'answer' event from clients
+  socket.on('answer', (answer) => {
+    socket.broadcast.emit('answer', answer);
   });
 
-  // Handle 'answer' event
-  socket.on('answer', (userId, answer) => {
-    socket.broadcast.emit('answer', userId, answer);
+  // Handle 'candidate' event from clients
+  socket.on('candidate', (candidate) => {
+    socket.broadcast.emit('candidate', candidate);
   });
 
-  // Handle 'candidate' event
-  socket.on('candidate', (userId, candidate) => {
-    socket.broadcast.emit('candidate', userId, candidate);
-  });
-
-  // Handle user disconnection
+  // Handle disconnection
   socket.on('disconnect', () => {
-    io.emit('user disconnected', socket.id);
-    console.log('user disconnected');
-  });
-
-  // Handle chat messages
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+    console.log('A user disconnected');
   });
 });
+
+// Set the port
+const port = process.env.PORT || 3000;
 
 // Start the server
-server.listen(3000, () => {
-  console.log('Server running on port 3000');
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
+
 
 
 
